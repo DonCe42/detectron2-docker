@@ -1,3 +1,4 @@
+version: '1'
 
 services:
   detectron2:
@@ -7,9 +8,10 @@ services:
     image: detectron2-app
     container_name: detectron2-container
     volumes:
-      - ./data:/app/data
-    command: --video /app/data/input/video1.mp4 --output /app/data/output --stats
-    # Para Ubuntu 24.04, podemos usar esta nueva sintaxis para GPUs
+      - ${INPUT_DIR:-./data/input}:/app/data/input
+      - ${OUTPUT_DIR:-./data/output}:/app/data/output
+    command: --video /app/data/input/${VIDEO_FILE:-video1.mp4} --output /app/data/output ${EXTRA_ARGS:-"--stats"}
+    # Configuración para soporte de GPU
     deploy:
       resources:
         reservations:
