@@ -1,0 +1,19 @@
+
+services:
+  detectron2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: detectron2-app
+    container_name: detectron2-container
+    volumes:
+      - ./data:/app/data
+    command: --video /app/data/input/video1.mp4 --output /app/data/output --stats
+    # Para Ubuntu 24.04, podemos usar esta nueva sintaxis para GPUs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
